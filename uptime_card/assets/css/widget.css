@@ -1,0 +1,129 @@
+div.dashboard-widget-uptime_card {
+	overflow: hidden;
+}
+
+div.dashboard-widget-uptime_card .uptime-card {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	height: 100%;
+	min-width: 0;
+	padding: 4px 8px 8px;
+}
+
+div.dashboard-widget-uptime_card .uptime-card--empty {
+	align-items: center;
+	color: #8a8f98;
+	justify-content: center;
+	min-height: 80px;
+	text-align: center;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__header {
+	align-items: center;
+	display: grid;
+	gap: 8px;
+	grid-template-columns: minmax(0, 1fr) max-content;
+	min-height: 24px;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__title {
+	color: #4b5563;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 18px;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__status {
+	align-items: center;
+	display: inline-flex;
+	font-size: 12px;
+	font-weight: 600;
+	gap: 6px;
+	line-height: 18px;
+	min-width: 0;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__status-dot {
+	background: currentColor;
+	border-radius: 50%;
+	display: inline-block;
+	flex: 0 0 auto;
+	height: 8px;
+	width: 8px;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__status-text {
+	max-width: 180px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__timeline {
+	align-items: end;
+	display: grid;
+	flex: 1 1 auto;
+	gap: var(--uptime-card-bar-gap);
+	grid-auto-columns: minmax(2px, 1fr);
+	grid-auto-flow: column;
+	min-height: calc(var(--uptime-card-bar-height) + 8px);
+	min-width: 0;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__bar {
+	border-radius: var(--uptime-card-bar-radius);
+	height: var(--uptime-card-bar-height);
+	min-width: 2px;
+	outline: none;
+	transition: filter 120ms ease, transform 120ms ease;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__bar:hover,
+div.dashboard-widget-uptime_card .uptime-card__bar:focus {
+	filter: saturate(1.14);
+	transform: translateY(-4px);
+}
+
+div.dashboard-widget-uptime_card .uptime-card__footer {
+	align-items: center;
+	color: #8a8f98;
+	display: grid;
+	font-size: 11px;
+	gap: 8px;
+	grid-template-columns: max-content minmax(0, 1fr) max-content;
+	line-height: 16px;
+	min-height: 16px;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__average {
+	align-items: center;
+	display: flex;
+	font-weight: 600;
+	gap: 8px;
+	justify-content: center;
+	min-width: 0;
+	overflow: hidden;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__average::before,
+div.dashboard-widget-uptime_card .uptime-card__average::after {
+	background: #d6dae0;
+	content: "";
+	display: block;
+	flex: 1 1 auto;
+	height: 1px;
+	min-width: 8px;
+}
+
+div.dashboard-widget-uptime_card .uptime-card__footer-edge {
+	white-space: nowrap;
+}

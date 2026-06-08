@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2.0,
+  "id": "uptime_card",
+  "type": "widget",
+  "name": "Uptime card",
+  "namespace": "UptimeCard",
+  "version": "1.0.0",
+  "author": "Codex",
+  "description": "Minimal uptime timeline widget for item history.",
+  "widget": {
+    "size": {
+      "width": 12,
+      "height": 4
+    },
+    "js_class": "CWidgetUptimeCard",
+    "in": {
+      "time_period": {
+        "type": "_timeperiod"
+      }
+    }
+  },
+  "actions": {
+    "widget.uptime_card.view": {
+      "class": "WidgetView"
+    }
+  },
+  "assets": {
+    "css": [
+      "widget.css"
+    ],
+    "js": [
+      "class.widget.js"
+    ]
+  }
+}
