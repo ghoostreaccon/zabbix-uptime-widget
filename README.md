@@ -5,7 +5,7 @@ A Zabbix dashboard widget inspired by `dylandoamaral/uptime-card`.
 It renders one selected Zabbix item as a compact status timeline:
 
 - green bars for fully OK periods
-- red bars for fully/down-threshold problem periods
+- red bars for periods meeting the configured problem threshold
 - yellow bars for mixed periods
 - gray bars for unknown/no-data periods
 - current status and average uptime for the selected time period
@@ -28,26 +28,6 @@ Then in Zabbix:
 4. Edit a dashboard and add the **Uptime card** widget.
 
 For container installs, mount or copy `uptime_card` into the frontend container's widgets directory.
-
-## Troubleshooting
-
-### `Wrong Widget.php class name for module located at widgets/uptime_card`
-
-The widget code must use the `Widgets\UptimeCard` PHP namespace when installed under
-`/usr/share/zabbix/ui/widgets/uptime_card`.
-
-Zabbix builds the PHP namespace prefix from the first path segment. If the widget is located at
-`widgets/uptime_card`, Zabbix expects `Widgets\UptimeCard\Widget`, which matches this package.
-
-Remove any old module copy and install it under `ui/widgets`:
-
-```bash
-rm -rf /usr/share/zabbix/modules/uptime_card
-cp -a uptime_card /usr/share/zabbix/ui/widgets/uptime_card
-```
-
-Then go to **Administration -> General -> Modules**, click **Scan directory**, and enable
-**Uptime card** again.
 
 ## Configuration
 
@@ -73,8 +53,32 @@ Fields:
 - **Bar height, spacing, radius**: Timeline appearance.
 - **Colors**: OK, problem, mixed, and unknown colors.
 
-## Notes
+## Calculation
 
-The widget queries item history directly. If no value exists before the selected time period, the beginning of the period is rendered as unknown because Zabbix cannot prove the prior state from history.
+The widget treats item history as state changes over time. Each value is classified as OK, problem, or unknown using the configured value lists. Numeric values not matched by those lists are classified as OK when greater than `0` and problem when `0` or lower. The last value before the selected range seeds the initial state; if there is no previous value, the range starts as unknown. A state lasts until the next history value changes it.
 
-This package does not copy code from the Home Assistant card; it ports the same status-timeline idea to the Zabbix dashboard widget API.
+For the selected time period `[from, to]`, the widget splits the range into `Bars` equal intervals. For each bar `i`:
+
+```text
+bar_duration_i = bar_to_i - bar_from_i
+overlap_i,j = max(0, min(segment_to_j, bar_to_i) - max(segment_from_j, bar_from_i))
+state_duration_i,state = sum(overlap_i,j for every segment j in state)
+state_percent_i,state = 100 * state_duration_i,state / bar_duration_i
+```
+
+Any part of a bar that is not covered by known history is counted as unknown.
+
+The bar color is selected from those percentages:
+
+- unknown if the bar is effectively 100% unknown
+- OK if the bar is effectively 100% OK
+- problem if `problem_percent_i >= Problem threshold`
+- mixed otherwise
+
+The displayed average uptime is duration-based and excludes unknown time:
+
+```text
+average_uptime = 100 * total_ok_duration / (total_ok_duration + total_problem_duration)
+```
+
+If the selected period contains only unknown time, the widget shows `-` for the average. Unknown time does not lower the percentage; it is omitted from the denominator because Zabbix has no value proving whether the item was OK or in problem state.
