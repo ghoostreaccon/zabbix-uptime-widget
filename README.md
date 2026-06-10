@@ -11,6 +11,8 @@ It renders one selected Zabbix item as a compact status timeline:
 - current status and average uptime for the selected time period
 
 The implementation is a Zabbix frontend widget for the Zabbix 7.x/8.0 widget framework.
+## Screenshot
+![Screenshot](https://github.com/ghoostreaccon/zabbix-uptime-widget/blob/main/Screenshot_20260608_212609.png)
 
 ## Install
 
